@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cambodia Address Selector</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.19/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-100 min-h-screen flex items-center justify-center p-4">
+
+    <div class="card w-full max-w-md bg-base-100 shadow-2xl border border-slate-200">
+        <div class="card-body">
+            <h2 class="card-title text-2xl font-bold text-primary mb-4">Location Profile</h2>
+            <p class="text-sm text-slate-500 mb-6">Please select your administrative division.</p>
+
+            <div class="space-y-4">
+                <div class="form-control">
+                    <label class="label font-semibold">Province</label>
+                    <select id="province" class="select select-bordered w-full">
+                        <option value="" disabled selected>Loading Provinces...</option>
+                    </select>
+                </div>
+
+                <div class="form-control">
+                    <label class="label font-semibold">District</label>
+                    <select id="district" class="select select-bordered w-full" disabled>
+                        <option value="" disabled selected>Select Province first</option>
+                    </select>
+                </div>
+
+                <div class="form-control">
+                    <label class="label font-semibold">Commune</label>
+                    <select id="commune" class="select select-bordered w-full" disabled>
+                        <option value="" disabled selected>Select District first</option>
+                    </select>
+                </div>
+
+                <div class="form-control">
+                    <label class="label font-semibold">Village</label>
+                    <select id="village" class="select select-bordered w-full" disabled>
+                        <option value="" disabled selected>Select Commune first</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="card-actions justify-end mt-8">
+                <button class="btn btn-primary w-full" onclick="alert('Location Saved!')">Save Address</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = "https://corsproxy.io/?https://cambo-gazetteer.manethpak.dev/api/v1";
+        
+        const dom = {
+            p: document.getElementById('province'),
+            d: document.getElementById('district'),
+            c: document.getElementById('commune'),
+            v: document.getElementById('village')
+        };
+
+        async function fetchData(url, dropdown, label) {
+            try {
+                dropdown.innerHTML = `<option value="" disabled selected>Loading ${label}...</option>`;
+                
+                const res = await fetch(API_BASE + url);
+                const json = await res.json();
+                
+                dropdown.innerHTML = `<option value="" disabled selected>Select ${label}</option>`;
+                json.data.forEach(item => {
+                    dropdown.add(new Option(item.name_en, item.id));
+                });
+                
+                dropdown.disabled = false;
+            } catch (error) {
+                console.error("Fetch error:", error);
+                dropdown.innerHTML = `<option value="" disabled selected>Error loading ${label}</option>`;
+            }
+        }
+
+        function reset(level) {
+            if (level <= 1) { 
+                dom.d.disabled = true; 
+                dom.d.innerHTML = '<option value="" disabled selected>Select District</option>'; 
+            }
+            if (level <= 2) { 
+                dom.c.disabled = true; 
+                dom.c.innerHTML = '<option value="" disabled selected>Select Commune</option>'; 
+            }
+            if (level <= 3) { 
+                dom.v.disabled = true; 
+                dom.v.innerHTML = '<option value="" disabled selected>Select Village</option>'; 
+            }
+        }
+
+        fetchData('/provinces', dom.p, 'Province');
+
+        dom.p.addEventListener('change', () => {
+            reset(1);
+            fetchData(`/districts?province=${dom.p.value}`, dom.d, 'District');
+        });
+
+        dom.d.addEventListener('change', () => {
+            reset(2);
+            fetchData(`/communes?district=${dom.d.value}`, dom.c, 'Commune');
+        });
+
+        dom.c.addEventListener('change', () => {
+            reset(3);
+            fetchData(`/villages?commune=${dom.c.value}`, dom.v, 'Village');
+        });
+    </script>
+</body>
+</html>

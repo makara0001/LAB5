@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h1>You are now on Page B</h1>
+    <p>Notice that your previous tab has changed!</p>
+    
+    <script>
+        setTimeout(() => {
+            if (window.opener) {
+                window.opener.location = "pageC.html";
+            }
+        }, 3000); 
+    </script>
+</body>
+</html>

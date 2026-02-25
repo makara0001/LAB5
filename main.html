@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 5 - Main Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.19/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 min-h-screen p-8">
+
+    <div class="max-w-4xl mx-auto">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-primary mb-2">Cybersecurity Lab 5</h1>
+            <p class="text-slate-600 italic">Security Vulnerabilities & Dynamic API Integration</p>
+        </header>
+
+        <div class="grid md:grid-cols-2 gap-8">
+            
+            <div class="card bg-base-100 shadow-xl border-t-4 border-error">
+                <div class="card-body">
+                    <h2 class="card-title text-error">Part I: Tabnapping Attack</h2>
+                    <p>Demonstrates how <code>target="_blank"</code> without <code>rel="noopener"</code> can be exploited for phishing.</p>
+                    <div class="card-actions justify-end mt-4">
+                        <a href="index.html" class="btn btn-error btn-outline">Launch Demo</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card bg-base-100 shadow-xl border-t-4 border-success">
+                <div class="card-body">
+                    <h2 class="card-title text-success">Part II: Address Selector</h2>
+                    <p>Dynamic administrative division selector for Cambodia using the Cambo Gazetteer API with cascading logic.</p>
+                    <div class="card-actions justify-end mt-4">
+                        <a href="address.html" class="btn btn-success btn-outline">Open Selector</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <footer class="mt-16 text-center text-sm text-slate-400">
+            <p>Ensure all files (index.html, address.html, pageB.html, pageC.html) are in the same folder.</p>
+        </footer>
+    </div>
+
+</body>
+</html>
